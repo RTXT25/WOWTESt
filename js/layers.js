@@ -6,7 +6,7 @@ var ctx = canvas.getContext("2d")
 canvas.width = 32
 canvas.height = 24
 
-var image = new Image()
+var map = {}
 
 function formatGridId(col, row) {
     return col < 10 ? row + "0" + col : "" + row + col
@@ -67,15 +67,18 @@ addLayer("BA", {
     }},
 
     update(diff) {
-        if(player[this.layer].running) {
+        if(player[this.layer].running && video.currentTime < video.duration) {
             player[this.layer].currentFrame++
-            video.currentTime = player[this.layer].currentFrame / 20
-            ctx.drawImage(video, 0, 0, 32, 24)
+            //video.currentTime = player[this.layer].currentFrame / 20
+            //ctx.drawImage(video, 0, 0, 32, 24)
+            //map[player[this.layer].currentFrame.toString()] = {}
             for (var x = 1; x <= 32; x++) {
+                //map[player[this.layer].currentFrame.toString()][x.toString()] = {}
                 for (var y = 1; y <= 24; y++) {
-                    var data = ctx.getImageData(x, y, 1, 1).data
-                    setGridData(this.layer, formatGridId(x, y), "#" + data[0].toString(16) + data[1].toString(16) + data[2].toString(16))
+                    //var data = ctx.getImageData(x, y, 1, 1).data
+                    setGridData(this.layer, formatGridId(x, y), images[player[this.layer].currentFrame.toString()][x.toString()][y.toString()])
                     //console.log(ctx.getImageData(x, y, 1, 1).data[0].toString(16) + ctx.getImageData(x, y, 1, 1).data[1].toString(16) + ctx.getImageData(x, y, 1, 1).data[2].toString(16))
+                    //map[player[this.layer].currentFrame.toString()][x.toString()][y.toString()] = "#" + (data[0].toString(16).length == 2 ? data[0].toString(16) : "0" + data[0].toString(16)) + (data[0].toString(16).length == 2 ? data[0].toString(16) : "0" + data[0].toString(16)) + (data[0].toString(16).length == 2 ? data[0].toString(16) : "0" + data[0].toString(16))
                 }
             }
 
