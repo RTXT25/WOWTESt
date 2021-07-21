@@ -1,28 +1,86 @@
-addLayer("p", {
-    name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+var video = document.createElement("video")
+video.src = "Touhou - Bad Apple.mp4"
+
+var canvas = document.createElement("canvas")
+var ctx = canvas.getContext("2d")
+canvas.width = 32
+canvas.height = 24
+
+var image = new Image()
+
+function formatGridId(col, row) {
+    return col < 10 ? row + "0" + col : "" + row + col
+}
+
+addLayer("BA", {
+    name: "Bad Apple",
+    symbol: "BA", 
+    position: 0,
+    row: 0,
+    color: "#4BDC13",
+    requires: new Decimal(10),
+    resource: "points",
+
+    tabFormat: [
+        "grid",
+        ["clickable", "state-changer"]
+    ],
+
+    grid: {
+        cols: 32, //640
+        rows: 24, //480
+
+        getStartData(id) {
+            return "#FFFFFF"
+        },
+
+        getStyle(data, id) {
+            return {
+                "background-color": data,
+                "width": "20px",
+                "height": "20px"
+            }
+        }
+    },
+
+    clickables: {
+        "state-changer": {
+            display() {
+                return player[this.layer].running ? "Pause" : "Run"
+            },
+
+            canClick() {
+                return true
+            },
+
+            onClick() {
+                player[this.layer].running = !player[this.layer].running
+            },
+        }
+    },
+
     startData() { return {
         unlocked: true,
-		points: new Decimal(0),
+        points: new Decimal(0),
+        currentFrame: 0,
+        running: false,
     }},
-    color: "#4BDC13",
-    requires: new Decimal(10), // Can be a function that takes requirement increases into account
-    resource: "prestige points", // Name of prestige currency
-    baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.points}, // Get the current amount of baseResource
-    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
-    gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
-        return mult
+
+    update(diff) {
+        if(player[this.layer].running) {
+            player[this.layer].currentFrame++
+            video.currentTime = player[this.layer].currentFrame / 20
+            ctx.drawImage(video, 0, 0, 32, 24)
+            for (var x = 1; x <= 32; x++) {
+                for (var y = 1; y <= 24; y++) {
+                    setGridData(this.layer, formatGridId(x, y), "#" + ctx.getImageData(x, y, 1, 1).data[0].toString(16) + ctx.getImageData(x, y, 1, 1).data[1].toString(16) + ctx.getImageData(x, y, 1, 1).data[2].toString(16))
+                    //console.log(ctx.getImageData(x, y, 1, 1).data[0].toString(16) + ctx.getImageData(x, y, 1, 1).data[1].toString(16) + ctx.getImageData(x, y, 1, 1).data[2].toString(16))
+                }
+            }
+
+        }
     },
-    gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
-    },
-    row: 0, // Row the layer is in on the tree (0 is the first row)
-    hotkeys: [
-        {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-    ],
+
+    baseAmount() {return player.points},
     layerShown(){return true}
 })
