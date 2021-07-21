@@ -71,10 +71,10 @@ addLayer("BA", {
             player[this.layer].currentFrame++
             video.currentTime = player[this.layer].currentFrame / 20
             ctx.drawImage(video, 0, 0, 32, 24)
+            var data = ctx.getImageData(x, y, 32, 24).data
             for (var x = 1; x <= 32; x++) {
                 for (var y = 1; y <= 24; y++) {
-                    var data = ctx.getImageData(x, y, 1, 1).data
-                    setGridData(this.layer, formatGridId(x, y), "#" + data[0].toString(16) + data[1].toString(16) + data[2].toString(16))
+                    setGridData(this.layer, formatGridId(x, y), "#" + data[4 * ((x-1)*24 + y)].toString(16) + data[4 * ((x-1)*24 + y) + 1].toString(16) + data[4 * ((x-1)*24 + y) + 2].toString(16))
                     //console.log(ctx.getImageData(x, y, 1, 1).data[0].toString(16) + ctx.getImageData(x, y, 1, 1).data[1].toString(16) + ctx.getImageData(x, y, 1, 1).data[2].toString(16))
                 }
             }
