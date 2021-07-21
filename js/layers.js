@@ -73,7 +73,8 @@ addLayer("BA", {
             ctx.drawImage(video, 0, 0, 32, 24)
             for (var x = 1; x <= 32; x++) {
                 for (var y = 1; y <= 24; y++) {
-                    setGridData(this.layer, formatGridId(x, y), "#" + ctx.getImageData(x, y, 1, 1).data[0].toString(16) + ctx.getImageData(x, y, 1, 1).data[1].toString(16) + ctx.getImageData(x, y, 1, 1).data[2].toString(16))
+                    var data = ctx.getImageData(x, y, 1, 1).data
+                    setGridData(this.layer, formatGridId(x, y), "#" + data[0].toString(16) + data[1].toString(16) + data[2].toString(16))
                     //console.log(ctx.getImageData(x, y, 1, 1).data[0].toString(16) + ctx.getImageData(x, y, 1, 1).data[1].toString(16) + ctx.getImageData(x, y, 1, 1).data[2].toString(16))
                 }
             }
