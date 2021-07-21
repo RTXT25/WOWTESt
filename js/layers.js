@@ -1,13 +1,3 @@
-var video = document.createElement("video")
-video.src = "Touhou - Bad Apple.mp4"
-
-var canvas = document.createElement("canvas")
-var ctx = canvas.getContext("2d")
-canvas.width = 32
-canvas.height = 24
-
-var map = {}
-
 function formatGridId(col, row) {
     return col < 10 ? row + "0" + col : "" + row + col
 }
@@ -67,7 +57,7 @@ addLayer("BA", {
     }},
 
     update(diff) {
-        if(player[this.layer].running && video.currentTime < video.duration) {
+        if(player[this.layer].running) {
             player[this.layer].currentFrame++
             //video.currentTime = player[this.layer].currentFrame / 20
             //ctx.drawImage(video, 0, 0, 32, 24)
