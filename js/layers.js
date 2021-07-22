@@ -62,11 +62,11 @@ addLayer("BA", {
             //video.currentTime = player[this.layer].currentFrame / 20
             //ctx.drawImage(video, 0, 0, 32, 24)
             //map[player[this.layer].currentFrame.toString()] = {}
-            for (var x = 1; x <= 32; x++) {
+            for (var x = 0; x < 32; x++) {
                 //map[player[this.layer].currentFrame.toString()][x.toString()] = {}
-                for (var y = 1; y <= 24; y++) {
+                for (var y = 0; y < 24; y++) {
                     //var data = ctx.getImageData(x, y, 1, 1).data
-                    setGridData(this.layer, formatGridId(x, y), images[player[this.layer].currentFrame.toString()][x.toString()][y.toString()])
+                    setGridData(this.layer, formatGridId(x+1, y+1), images[player[this.layer].currentFrame][x][y])
                     //console.log(ctx.getImageData(x, y, 1, 1).data[0].toString(16) + ctx.getImageData(x, y, 1, 1).data[1].toString(16) + ctx.getImageData(x, y, 1, 1).data[2].toString(16))
                     //map[player[this.layer].currentFrame.toString()][x.toString()][y.toString()] = "#" + (data[0].toString(16).length == 2 ? data[0].toString(16) : "0" + data[0].toString(16)) + (data[0].toString(16).length == 2 ? data[0].toString(16) : "0" + data[0].toString(16)) + (data[0].toString(16).length == 2 ? data[0].toString(16) : "0" + data[0].toString(16))
                 }
